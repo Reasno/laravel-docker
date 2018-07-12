@@ -14,7 +14,7 @@ RUN apt-get update -yqq \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng12-dev \
+        libpng-dev \
         unzip \
         nano \
         mysql-client \
