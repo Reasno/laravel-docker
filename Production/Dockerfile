@@ -23,7 +23,6 @@ RUN apt-get update -yqq \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install \
         intl \
-        mcrypt \
         pcntl \
         pdo_mysql \
         pdo_pgsql \
