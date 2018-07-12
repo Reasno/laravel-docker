@@ -32,8 +32,9 @@ RUN apt-get update -yqq \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && pecl install redis \
-    && pecl install xdebug \
-    && docker-php-ext-enable redis \
+    && pecl install seaslog \
+    && pecl install rdkafka \
+    && docker-php-ext-enable redis seaslog rdkafka\
     # Remove dev packages
     && apt-get remove --purge -yyq libicu-dev \
         libpq-dev \
