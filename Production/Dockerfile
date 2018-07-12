@@ -15,6 +15,7 @@ RUN apt-get update -yqq \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng-dev \
+        librdkafka-dev \
         unzip \
         nano \
         mysql-client \
