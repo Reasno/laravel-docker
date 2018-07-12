@@ -1,4 +1,4 @@
-FROM php:7-apache
+FROM php:7.2-apache
 MAINTAINER Wesley Elfring <hi@wesleyelfring.nl>
 
 # Copy the PHP configuration file
