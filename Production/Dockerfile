@@ -19,6 +19,7 @@ RUN apt-get update -yqq \
         unzip \
         nano \
         mysql-client \
+        php-mongodb \
     # Install PHP Exts
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install \
@@ -34,7 +35,8 @@ RUN apt-get update -yqq \
     && pecl install redis \
     && pecl install seaslog \
     && pecl install rdkafka \
-    && docker-php-ext-enable redis seaslog rdkafka\
+    && pecl install mongodb \
+    && docker-php-ext-enable redis seaslog rdkafka mongodb\
     # Remove dev packages
     && apt-get remove --purge -yyq libicu-dev \
         libpq-dev \
