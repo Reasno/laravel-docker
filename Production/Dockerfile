@@ -19,7 +19,6 @@ RUN apt-get update -yqq \
         unzip \
         nano \
         mysql-client \
-        php-mongodb \
     # Install PHP Exts
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install \
