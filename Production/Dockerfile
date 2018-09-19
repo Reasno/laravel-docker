@@ -19,6 +19,7 @@ RUN apt-get update -yqq \
         unzip \
         nano \
         mysql-client \
+        iputils-ping \
     # Install PHP Exts
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install \
