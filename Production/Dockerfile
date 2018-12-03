@@ -4,6 +4,11 @@ MAINTAINER Wesley Elfring <hi@wesleyelfring.nl>
 # Copy the PHP configuration file
 COPY ./php.ini /usr/local/etc/php/
 
+# Supervisor Config
+COPY ./supervisord.conf /etc/supervisord.conf
+# Start Supervisord
+COPY ./cmd.sh /
+
 # Install PHP extensions
 RUN apt-get update -yqq \
     # Install libs for building PHP exts
@@ -20,6 +25,8 @@ RUN apt-get update -yqq \
         nano \
         mysql-client \
         iputils-ping \
+        supervisor \
+        cron \
     # Install PHP Exts
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install \
@@ -52,7 +59,8 @@ RUN apt-get update -yqq \
 
 RUN phpmemory_limit=512M \
     # Increase the PHP Memory limit to 512mb for both Apache and the CLI
-    && sed -i 's/memory_limit = .*/memory_limit = '${phpmemory_limit}'/' ${PHP_INI_DIR}/php.ini 
+    && sed -i 's/memory_limit = .*/memory_limit = '${phpmemory_limit}'/' ${PHP_INI_DIR}/php.ini \
+    && sed -i s/upload_max_filesize\ =\ 2M/upload_max_filesize\ =\ 5M/ /usr/local/etc/php/php.ini
 
 # Add apache and php config for Laravel
 COPY ./site.conf /etc/apache2/sites-available/site.conf
@@ -60,3 +68,13 @@ RUN a2dissite 000-default.conf && a2ensite site.conf && a2enmod rewrite
 
 # Change uid and gid of apache to docker user uid/gid
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
+
+RUN chmod 755 /cmd.sh && \
+    touch /var/log/cron.log && \
+    touch /etc/cron.d/crontasks
+
+EXPOSE 80
+
+ENTRYPOINT ["/bin/bash", "/cmd.sh"]
+
+
