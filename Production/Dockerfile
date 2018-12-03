@@ -36,7 +36,8 @@ RUN apt-get update -yqq \
     && pecl install seaslog \
     && pecl install rdkafka \
     && pecl install mongodb \
-    && docker-php-ext-enable redis seaslog rdkafka mongodb\
+    && pecl install grpc \
+    && docker-php-ext-enable redis seaslog rdkafka mongodb grpc\
     # Remove dev packages
     && apt-get remove --purge -yyq libicu-dev \
         libpq-dev \
