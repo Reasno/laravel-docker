@@ -76,5 +76,5 @@ RUN chmod 755 /cmd.sh && \
 EXPOSE 80
 
 ENTRYPOINT ["/bin/bash", "/cmd.sh"]
-
+CMD []
 
