@@ -1,8 +1,8 @@
-FROM php:7.2-apache
+FROM php:7.2-fpm
 MAINTAINER Wesley Elfring <hi@wesleyelfring.nl>
 
 # Copy the PHP configuration file
-COPY ./php.ini /usr/local/etc/php/
+COPY ./php.ini /${PHP_INI_DIR}
 
 # Supervisor Config
 COPY ./supervisord.conf /etc/supervisord.conf
@@ -27,6 +27,7 @@ RUN apt-get update -yqq \
         iputils-ping \
         supervisor \
         cron \
+        nginx \
     # Install PHP Exts
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install \
@@ -57,17 +58,17 @@ RUN apt-get update -yqq \
 
 # Configure PHP
 
-RUN phpmemory_limit=512M \
-    # Increase the PHP Memory limit to 512mb for both Apache and the CLI
-    && sed -i 's/memory_limit = .*/memory_limit = '${phpmemory_limit}'/' ${PHP_INI_DIR}/php.ini \
-    && sed -i s/upload_max_filesize\ =\ 2M/upload_max_filesize\ =\ 5M/ /usr/local/etc/php/php.ini
 
-# Add apache and php config for Laravel
-COPY ./site.conf /etc/apache2/sites-available/site.conf
-RUN a2dissite 000-default.conf && a2ensite site.conf && a2enmod rewrite
+# Nginx configuration
+RUN sed -i -e"s/worker_processes  1/worker_processes 5/" /etc/nginx/nginx.conf && \
+    sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 2/" /etc/nginx/nginx.conf && \
+    sed -i -e"s/keepalive_timeout 2/keepalive_timeout 2;\n\tclient_max_body_size 128m;\n\tproxy_buffer_size 256k;\n\tproxy_buffers 4 512k;\n\tproxy_busy_buffers_size 512k/" /etc/nginx/nginx.conf && \
+    echo "daemon off;" >> /etc/nginx/nginx.conf && \
 
-# Change uid and gid of apache to docker user uid/gid
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
+# Add nginx and php config for Laravel
+COPY ./nginx.conf /etc/nginx/sites-available/default.conf
+RUN rm -f /etc/nginx/sites-enabled/default && \
+    ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default
 
 RUN chmod 755 /cmd.sh && \
     touch /var/log/cron.log && \
