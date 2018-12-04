@@ -25,6 +25,7 @@ RUN apt-get update -yqq \
         nano \
         mysql-client \
         iputils-ping \
+        curl \
         supervisor \
         cron \
         nginx \
@@ -72,7 +73,8 @@ RUN rm -f /etc/nginx/sites-enabled/default && \
 
 RUN chmod 755 /cmd.sh && \
     touch /var/log/cron.log && \
-    touch /etc/cron.d/crontasks
+    touch /etc/cron.d/crontasks. && \
+    curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 
 EXPOSE 80
 
