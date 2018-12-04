@@ -31,7 +31,7 @@ RUN apt-get update -yqq \
         nginx \
         git \
         openssh-server \ 
-        openssl
+        openssl \
     # Install PHP Exts
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install \
