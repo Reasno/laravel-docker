@@ -75,7 +75,7 @@ RUN rm -f /etc/nginx/sites-enabled/default && \
     ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default
 
 RUN chmod 755 /cmd.sh && \
-    chmod 755 -r /var/www/html
+    chmod 755 -r /var/www/html && \
     touch /var/log/cron.log && \
     touch /etc/cron.d/crontasks. && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
