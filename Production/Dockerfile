@@ -29,6 +29,9 @@ RUN apt-get update -yqq \
         supervisor \
         cron \
         nginx \
+        git \
+        openssh-server \ 
+        openssl
     # Install PHP Exts
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install \
