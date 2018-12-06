@@ -13,6 +13,9 @@ COPY ./cmd.sh /
 RUN apt-get update -yqq \
     # Install libs for building PHP exts
     && apt-get install -yqq --no-install-recommends \
+        libcurl4-openssl-dev \
+        pkg-config \
+        libssl-dev \
         libicu-dev \
         libpq-dev \
         libmcrypt-dev \
