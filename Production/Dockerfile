@@ -44,6 +44,7 @@ RUN apt-get update -yqq \
         pdo_pgsql \
         pgsql \
         zip \
+        bcmath \
         opcache \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
