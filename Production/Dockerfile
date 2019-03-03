@@ -53,6 +53,7 @@ RUN apt-get update -yqq \
     && pecl install rdkafka \
     && pecl install mongodb \
     && pecl install grpc \
+    && pecl install protobuf \
     && docker-php-ext-enable redis seaslog rdkafka mongodb grpc\
     # Remove dev packages
     && apt-get remove --purge -yyq libicu-dev \
