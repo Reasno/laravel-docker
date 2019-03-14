@@ -1,75 +1,11 @@
-FROM php:7
-MAINTAINER Wesley Elfring <hi@wesleyelfring.nl>
-
-# Copy the PHP configuration file
-COPY ./php.ini /usr/local/etc/php/
-
-# Install Apt transport for node/yarn repo's
-RUN apt-get update -yqq \
-    && apt-get install apt-transport-https ca-certificates
-
-# Install, start with Yarn and NodeJS repo keys
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-    && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get update -yqq \
-    && apt-get install -yqq --no-install-recommends \
-
-        # Install libs for building PHP exts
-        libicu-dev \
-        libpq-dev \
-        libmcrypt-dev \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        libpng12-dev \
-
-        # Install Build tools
-        build-essential \
-        nano \
-        mysql-client \
-        apt-utils \
-        git \
-        xvfb \
-        unzip \
-        wget \
-        nodejs \
-        yarn \
-    && rm -r /var/lib/apt/lists/*
-
-# Install PHP extensions
-RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
-    && docker-php-ext-install \
-        intl \
-        mcrypt \
-        pcntl \
-        pdo_mysql \
-        pdo_pgsql \
-        pgsql \
-        zip \
-        opcache \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd \
-    && pecl install redis \
-    && pecl install seaslog \
-    && pecl install rdkafka \
-    && docker-php-ext-enable redis seaslog rdkafka
-
-# Configure PHP
-RUN phpmemory_limit=1024M \
-    # Increase the PHP Memory limit to 1GB
-    && sed -i 's/memory_limit = .*/memory_limit = '${phpmemory_limit}'/' ${PHP_INI_DIR}/php.ini \
-
-    # Install Composer
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-
-    # Install PHPUnit
-    && wget https://phar.phpunit.de/phpunit.phar \
-    && chmod +x phpunit.phar && mv phpunit.phar /usr/local/bin/phpunit
-
-# Install Global NPM packages
-RUN npm install -g n && n stable && npm install -g npm gulp
-
-# Cleanup
-RUN apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+FROM registry.cn-qingdao.aliyuncs.com/huiji/laravel-production:2.5
+# Install GRPC roadrunner
+ENV RR_VERSION 1.0.1
+RUN curl -sL https://github.com/spiral/php-grpc/releases/download/v${RR_VERSION}/rr-grpc-${RR_VERSION}-linux-amd64.tar.gz -o rr-grpc.tar.gz\
+    && tar -xzf rr-grpc.tar.gz \
+    && mv rr-grpc-${RR_VERSION}-linux-amd64/rr-grpc /usr/local/bin/rr-grpc \
+    && rm rr-grpc.tar.gz
+# Install dependencies
+WORKDIR /var/www/html
+COPY install_ffmpeg.sh install_ffmpeg.sh
+RUN chmod +x ./install_ffmpeg.sh && ./install_ffmpeg.sh
