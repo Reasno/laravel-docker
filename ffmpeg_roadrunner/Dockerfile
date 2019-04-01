@@ -1,4 +1,4 @@
-FROM registry.cn-qingdao.aliyuncs.com/huiji/laravel-production:2.5
+FROM registry.cn-qingdao.aliyuncs.com/huiji/laravel-production:2.6
 # Install GRPC roadrunner
 ENV RR_VERSION 1.0.1
 RUN curl -sL https://github.com/spiral/php-grpc/releases/download/v${RR_VERSION}/rr-grpc-${RR_VERSION}-linux-amd64.tar.gz -o rr-grpc.tar.gz\
