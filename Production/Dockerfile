@@ -66,7 +66,7 @@ RUN apt-get update -yqq \
     && rm -r /var/lib/apt/lists/*
 
 # Configure PHP
-
+COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Nginx configuration
 RUN sed -i -e"s/worker_processes  1/worker_processes 5/" /etc/nginx/nginx.conf && \
