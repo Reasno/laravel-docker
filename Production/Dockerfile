@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.3-fpm
 MAINTAINER Wesley Elfring <hi@wesleyelfring.nl>
 
 # Copy the PHP configuration file
@@ -26,7 +26,7 @@ RUN apt-get update -yqq \
         librdkafka-dev \
         unzip \
         nano \
-        mysql-client \
+        default-mysql-client \
         iputils-ping \
         curl \
         supervisor \
