@@ -16,6 +16,7 @@ RUN apt-get update -yqq \
         libcurl4-openssl-dev \
         pkg-config \
         libssl-dev \
+        libzip-dev \
         libicu-dev \
         libpq-dev \
         libmcrypt-dev \
