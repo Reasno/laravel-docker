@@ -25,6 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u reasno --password-stdin
+
       - name: Build image
         run: |
           cd FFMPEG
@@ -37,8 +40,6 @@ jobs:
           
           echo VERSION=$VERSION
           docker build . --file Dockerfile --tag $IMAGE_NAME --build-arg version=$VERSION
-      - name: Log into registry
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u reasno --password-stdin
 
       - name: Push image
         run: |
