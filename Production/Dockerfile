@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 MAINTAINER Wesley Elfring <hi@wesleyelfring.nl>
 
 # Copy the PHP configuration file
@@ -50,7 +50,6 @@ RUN apt-get update -yqq \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && pecl install redis \
-    && pecl install seaslog \
     && pecl install rdkafka \
     && pecl install mongodb \
     && pecl install grpc \
