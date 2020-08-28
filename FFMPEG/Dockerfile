@@ -5,7 +5,4 @@ RUN curl -sL https://github.com/spiral/php-grpc/releases/download/v${RR_VERSION}
     && tar -xzf rr-grpc.tar.gz \
     && mv rr-grpc-${RR_VERSION}-linux-amd64/rr-grpc /usr/local/bin/rr-grpc \
     && rm rr-grpc.tar.gz
-# Install dependencies
-WORKDIR /var/www/html
-COPY install_ffmpeg.sh install_ffmpeg.sh
-RUN chmod +x ./install_ffmpeg.sh && ./install_ffmpeg.sh
+RUN apt-get update && apt-get -y install ffmpeg
