@@ -27,6 +27,7 @@ jobs:
 
       - name: Build image
         run: |
+          cd Production
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           # Strip "v" prefix from tag name
@@ -35,7 +36,7 @@ jobs:
           [ "$VERSION" == "master" ] && VERSION=latest
           
           echo VERSION=$VERSION
-          docker build . --file Production/Dockerfile --tag $IMAGE_NAME --build-arg version=$VERSION
+          docker build . --file Dockerfile --tag $IMAGE_NAME --build-arg version=$VERSION
       - name: Log into registry
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u reasno --password-stdin
 
