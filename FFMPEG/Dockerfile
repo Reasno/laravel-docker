@@ -1,5 +1,4 @@
-ARG VERSION
-FROM reasno/laravel-docker:$VERSION
+FROM reasno/laravel-docker:latest
 # Install GRPC roadrunner
 ENV RR_VERSION 1.0.8
 RUN curl -sL https://github.com/spiral/php-grpc/releases/download/v${RR_VERSION}/rr-grpc-${RR_VERSION}-linux-amd64.tar.gz -o rr-grpc.tar.gz\
