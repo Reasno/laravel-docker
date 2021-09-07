@@ -1,6 +1,5 @@
 FROM php:7.4-fpm
 ARG VERSION
-MAINTAINER Wesley Elfring <hi@wesleyelfring.nl>
 
 # Copy the PHP configuration file
 COPY ./php.ini /${PHP_INI_DIR}
